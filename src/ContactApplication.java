@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import util.Input;
 
 public class ContactApplication {
 
@@ -17,7 +18,7 @@ public class ContactApplication {
         createFileIfNotExists(directory, filename);
 
         try {
-            readLines(directory,filename);
+            readLine(directory,filename);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -35,11 +36,14 @@ public class ContactApplication {
             if (Files.notExists(dataFile)) {
                 Files.createFile(dataFile);
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        public static void writeListToFile(ArrayList<String> list, String directory, String filenale) throws IOException {
+    }
+        public static void readLines(String directory, String filename) throws IOException {
+
             Path filePath = Paths.get(directory, filename);
+
             List<String> list = Files.readAllLines(filePath);
 
             for(String item : list) {
@@ -47,15 +51,24 @@ public class ContactApplication {
             }
         }
 
-        public static ArrayList<String> makelist() {
+        public static ArrayList<String> makeList() {
             ArrayList<String> list = new ArrayList<>();
             Input input = new Input();
             String item;
-            do {
-                item = input.getString("Please input the item you want to add to the list.");
 
-            } while (input.yesNo("Do you want to add another item to the list? Press y or yes to continue"));
+            do {
+                System.out.println("Please input the item you want to add to the list.");
+                item = Input.getString();
+                list.add(item);
+                System.out.println("Do you want to add another item to the list? Press y or Yes to continue");
+            } while(Input.yesNo());
+
             return list;
         }
+
     }
+
+
+
+
 
