@@ -17,28 +17,7 @@ public class ContactApplication {
 
         String directory = "Contacts";
         String filename = "contacts.txt";
-        System.out.println("1. View contacts.\n" +
-                "2. Add a new contact.\n" +
-                "3. Search a contact by name.\n" +
-                "4. Delete an existing contact.\n" +
-                "5. Exit.\n" +
-                "Enter an option (1, 2, 3, 4 or 5):");
 
-        if(Input.getInt()==1){
-
-        }
-        else if (Input.getInt()==2){
-
-        }
-        else if (Input.getInt()==3){
-
-        }
-        else if (Input.getInt()==4){
-
-        }
-        else if (Input.getInt()==5){
-
-        }
         createFileOnce(directory,filename);
         ArrayList<String> myContacts=makeList();
         overwriteFile(myContacts,directory,filename);
@@ -61,6 +40,32 @@ public class ContactApplication {
     }
 
 
+
+    public static void Mainapp(){
+
+        System.out.println("1. View contacts.\n" +
+                "2. Add a new contact.\n" +
+                "3. Search a contact by name.\n" +
+                "4. Delete an existing contact.\n" +
+                "5. Exit.\n" +
+                "Enter an option (1, 2, 3, 4 or 5):");
+
+        if(Input.getInt()==1){
+
+        }
+        else if (Input.getInt()==2){
+
+        }
+        else if (Input.getInt()==3){
+
+        }
+        else if (Input.getInt()==4){
+
+        }
+        else if (Input.getInt()==5){
+
+        }
+    }
 
 
 
