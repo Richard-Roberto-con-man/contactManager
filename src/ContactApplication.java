@@ -26,9 +26,16 @@ public class ContactApplication {
         }catch (IOException e){
             System.out.println(e.getMessage());
         }
-
+        //using deleteContact method (it runs ok)
         System.out.println("please enter a contact yo want to delete");
-
+        try {
+            List<String> despues = deleteContact(Input.getString(), directory, filename);
+            for (String e : despues) {
+                System.out.println(e);
+            }
+        }catch (IOException e){
+            System.out.println(e);
+        }
 
     }
 
@@ -37,7 +44,7 @@ public class ContactApplication {
 
 
 
-    //method that a file on the passed directory and with passed (filename) name
+    //method that  a file on the passed directory and with passed (filename) name
     public static void  createFileOnce(String directory, String filename){
 
         Path dataDirectory=Paths.get(directory);
@@ -85,24 +92,22 @@ public class ContactApplication {
         for(String item : list) {
                 System.out.println(item);
         }
-
-    }
+        }
 
     //method to delete a record on the file
-    public static void deleteContact(String name,String directory, String filename){
+    public static List<String> deleteContact(String name,String directory, String filename) throws IOException {
         Path filePath = Paths.get(directory, filename);
-        try{
         List<String> list = Files.readAllLines(filePath);
+        if (Files.notExists(filePath)){
+            throw new IOException("the file doesn't exist");
+        }
         for(String item : list) {
             if (item.equalsIgnoreCase(name)) {
                 list.remove(item.indexOf(name));
             }
+        }
+            return  list;
 
-
-            }
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-    }
     }
 
 
