@@ -76,6 +76,20 @@ public class Input {
         }
     }
 
+    static public Long getLong(){
+        try {
+
+            return  Long.parseLong(scanner.nextLine());
+        }
+        catch (NumberFormatException e){
+            System.out.println("you had input a wrong number. This is the exception: "+e.getMessage()+"please enter a Hexadecimal number");
+            return  getLong();
+        }
+    }
+
+
+
+
 
 }
 
