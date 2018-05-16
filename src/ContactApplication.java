@@ -27,8 +27,12 @@ public class ContactApplication {
             System.out.println(e.getMessage());
         }
 
+        System.out.println("please enter a contact yo want to delete");
+
 
     }
+
+
 
 
 
@@ -84,16 +88,23 @@ public class ContactApplication {
 
     }
 
-//    //method to delete a record on the file
-//    public static void deleteContact(String name,String directory, String filename){
-//        Path filePath = Paths.get(directory, filename);
-//        List<String> list = Files.readAllLines(filePath);
-//        for(String item : list) {
-//            if (item.equalsIgnoreCase(name)) {
-//                list.remove(item.indexOf(name));
-//            }
-//        }
-//    }
+    //method to delete a record on the file
+    public static void deleteContact(String name,String directory, String filename){
+        Path filePath = Paths.get(directory, filename);
+        try{
+        List<String> list = Files.readAllLines(filePath);
+        for(String item : list) {
+            if (item.equalsIgnoreCase(name)) {
+                list.remove(item.indexOf(name));
+            }
+
+
+            }
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+    }
+    }
+
 
 
     //method to populate an ArrayList with Contact objects
