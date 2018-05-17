@@ -29,3 +29,5 @@ public class Contact {
         return name +" "+phoneNumber;
     }
 }
+//String.format("(%s) %s-%s", phoneNumber.substring(0, 3),
+//        phoneNumber.substring(3, 6),phoneNumber.substring(6, 10))
