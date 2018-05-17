@@ -13,35 +13,17 @@ import util.Input;
 public class ContactApplication {
 
     public static void main(String[] args) {
-        List<String> contactos;
 
         String directory = "Contacts";
         String filename = "contacts.txt";
-
-        createFileOnce(directory,filename);
-        ArrayList<String> myContacts=makeList();
-        overwriteFile(myContacts,directory,filename);
-        try {
-            readLines(directory,filename);
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-        //using deleteContact method (it runs ok)
-        System.out.println("please enter a contact yo want to delete");
-        try {
-            List<String> despues = deleteContact(Input.getString(), directory, filename);
-            for (String e : despues) {
-                System.out.println(e);
-            }
-        }catch (IOException e){
-            System.out.println(e);
-        }
+        Mainapp(directory,filename);
 
     }
 
 
 
-    public static void Mainapp(){
+    public static void Mainapp(String directory, String filename){
+          ArrayList<String> contactos=new ArrayList<>();
 
         System.out.println("1. View contacts.\n" +
                 "2. Add a new contact.\n" +
@@ -49,25 +31,51 @@ public class ContactApplication {
                 "4. Delete an existing contact.\n" +
                 "5. Exit.\n" +
                 "Enter an option (1, 2, 3, 4 or 5):");
+            int option=Input.getInt();
+            switch (option){
+                case 1:
+            try {
+                readLines(directory, filename);
+            }catch (IOException e){
+                System.out.println(e.getMessage());
+            }
+            Mainapp(directory,filename);
 
-        if(Input.getInt()==1){
+                case 2:
+            contactos=makeList();
+            writeFile(contactos,directory,filename);
+            Mainapp(directory,filename);
+                case 3:
+            System.out.println("pleasse enter the contact name");
+            String name=Input.getString();
+            try {
+                findContact(name,directory,filename);
+                Mainapp(directory,filename);
+            }catch (IOException e){
+                System.out.println("The user that you entered is not on you Contacts"+e.getMessage());
+                Mainapp(directory,filename);
+            }
+                case 4:
+            ArrayList<String>allcontactos;
+            System.out.println("Please enter the contact name to delete");
+            String inputName=Input.getString();
+            try {
+                allcontactos=deleteContact(inputName,directory,filename);
+                overwriteFile(allcontactos,directory,filename);
+                Mainapp(directory,filename);
+            }catch (IOException e){
+                System.out.println(e.getMessage());
+                Mainapp(directory,filename);
+            }
+                case 5:
+                    System.out.println("Exiting program");
+                    break;
 
-        }
-        else if (Input.getInt()==2){
+                    default:
+                        System.out.println("please enter a valid number for the menu options");
 
-        }
-        else if (Input.getInt()==3){
-
-        }
-        else if (Input.getInt()==4){
-
-        }
-        else if (Input.getInt()==5){
-
-        }
+         }
     }
-
-
 
 
     //method that  a file on the passed directory and with passed (filename) name
@@ -111,30 +119,55 @@ public class ContactApplication {
         }
     }
 
+
+
     //method that lopp and print out a line per time
     public static void readLines(String directory, String filename) throws IOException {
         Path filePath = Paths.get(directory, filename);
         List<String> list = Files.readAllLines(filePath);
+        if (list.isEmpty()){
+            System.out.println("the contact list is empty");
+        }
         for(String item : list) {
                 System.out.println(item);
         }
+    }
+
+    public static void findContact(String name,String directory, String filename) throws IOException {
+        Path filePath = Paths.get(directory, filename);
+        List<String> list = Files.readAllLines(filePath);
+        for(String item : list) {
+            if (item.contains(name)) {
+                System.out.println(item);
+            }
         }
+    }
 
     //method to delete a record on the file
-    public static List<String> deleteContact(String name,String directory, String filename) throws IOException {
+    public static ArrayList<String> deleteContact(String name,String directory, String filename) throws IOException {
         Path filePath = Paths.get(directory, filename);
         List<String> list = Files.readAllLines(filePath);
         if (Files.notExists(filePath)){
             throw new IOException("the file doesn't exist");
         }
-        for(String item : list) {
-            if (item.equalsIgnoreCase(name)) {
-                list.remove(item.indexOf(name));
+        boolean found=false;
+        ArrayList<String> esta=new ArrayList<>();
+        esta.addAll(list);
+        int index=esta.size()+1;
+        for(String item : esta) {
+            if (item.equalsIgnoreCase(name)){
+                index=esta.indexOf(item);
+                found=true;
             }
         }
-            return  list;
-
-    }
+        if (found==false){
+            System.out.println("the element was not found, please enter a valid contact");
+            name=Input.getString();
+            return deleteContact(name,directory,filename);
+        }
+        esta.remove(index);
+        return  esta;
+        }
 
 
 
@@ -148,7 +181,7 @@ public class ContactApplication {
             name = Input.getString();
             System.out.println("Please input the phone number for the person you want to add to the contact list.");
             number=Input.getString();
-            list.add(name+"|"+number);
+            list.add(name+" | "+number);
             System.out.println("Do you want to add another item to the list? Press y or Yes to continue");
         } while(Input.yesNo());
         return list;
