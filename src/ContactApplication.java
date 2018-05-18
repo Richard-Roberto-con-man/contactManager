@@ -13,11 +13,11 @@ import util.Input;
 public class ContactApplication {
 
     public static void main(String[] args) {
-
+//
         String directory = "Contacts";
         String filename = "contacts.txt";
-        Mainapp(directory, filename);
-
+        createFileOnce(directory,filename);
+        Mainapp(directory,filename);
     }
 
 
@@ -41,7 +41,7 @@ public class ContactApplication {
                 Mainapp(directory, filename);
 
             case 2:
-                contactos = makeList();
+                contactos = makeList(directory,filename);
                 writeFile(contactos, directory, filename);
                 Mainapp(directory, filename);
             case 3:
@@ -84,17 +84,20 @@ public class ContactApplication {
         Path dataFile = Paths.get(directory, filename);
 
         try {
-            if (Files.notExists(dataFile)) {
-                Files.createDirectory(dataDirectory);
-            }
             if (Files.notExists(dataDirectory)) {
+                Files.createDirectories(dataDirectory);
+            }
+
+            if (Files.notExists(dataFile)) {
                 Files.createFile(dataFile);
             }
-        } catch (IOException e) {
+        } catch(IOException e) {
             System.out.println(e.getMessage());
         }
 
     }
+
+
 
     //method  to write an pre-existent file adding an ArrayList elements
     public static void writeFile(ArrayList<String> contactList, String directory, String filename) {
@@ -126,9 +129,10 @@ public class ContactApplication {
             System.out.println("the contact list is empty");
         }
         for (String item : list) {
-            System.out.println();
+            System.out.println(item);
         }
     }
+
 
     public static void findContact(String name, String directory, String filename) throws IOException {
         Path filePath = Paths.get(directory, filename);
@@ -139,6 +143,7 @@ public class ContactApplication {
             }
         }
     }
+
 
     //method to delete a record on the file
     public static ArrayList<String> deleteContact(String name, String directory, String filename) throws IOException {
@@ -151,13 +156,14 @@ public class ContactApplication {
         ArrayList<String> esta = new ArrayList<>();
         esta.addAll(list);
         int index = esta.size() + 1;
-        for (String item : esta) {
+            for (String item : esta) {
             if (item.equalsIgnoreCase(name)) {
                 index = esta.indexOf(item);
                 found = true;
             }
+//            System.out.println(item);
         }
-        if (found == false) {
+        if (!found ) {
             System.out.println("the element was not found, please enter a valid contact");
             name = Input.getString();
             return deleteContact(name, directory, filename);
@@ -168,10 +174,11 @@ public class ContactApplication {
 
 
     //method to populate an ArrayList with Contact objects
-    public static ArrayList<String> makeList() {
+    public static ArrayList<String> makeList(String directory,String filename) {
         ArrayList<String> list = new ArrayList<>();
         String name;
         String number;
+        String contacto;
         do {
             System.out.println("Please input the name  you want to add to the contact list.");
             name = Input.getString();
@@ -180,8 +187,10 @@ public class ContactApplication {
             number = phoneformat(number);
             list.add(name + " | " + number);
             System.out.println("Do you want to add another item to the list? Press y or Yes to continue");
-        } while (Input.yesNo());
+            }
+        while (Input.yesNo()) ;
         return list;
+
     }
 
     public static String phoneformat(String phoneNumber) {
@@ -202,6 +211,12 @@ public class ContactApplication {
         }
         return formatedNumber;
     }
+
+
+
+
+
+
 }
 
 
